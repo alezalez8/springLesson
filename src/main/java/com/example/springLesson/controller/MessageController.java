@@ -1,6 +1,8 @@
 package com.example.springLesson.controller;
 
+import com.example.springLesson.exception.NotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,9 +23,19 @@ public class MessageController {
 
     }};
 
-    @GetMapping("1")
+    //@GetMapping
     public List<Map<String, String>> list(){
         return messages;
+    }
+
+    @GetMapping("{id}")
+    public Map<String, String> getOne(@PathVariable String id) {
+        return messages.stream()
+                .filter(message -> message.get("id").equals(id))
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
+
+
     }
 
     @GetMapping("2")
